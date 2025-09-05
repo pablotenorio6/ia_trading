@@ -70,8 +70,7 @@ def model_training(model_type: str, df: pd.DataFrame) -> pd.DataFrame():
 
 
 def model_testing(model_path:str, scaler_path:str, df:pd.DataFrame()):
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df = df[(df['timestamp'].dt.hour >= 10) & (df['timestamp'].dt.hour < 16)]
+    df = ut.clean_noisy_data(df)
     # First we get model and scaler to try
     scaler = joblib.load(scaler_path)
     ml_model= joblib.load(model_path)

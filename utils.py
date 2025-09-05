@@ -1,5 +1,14 @@
 import pandas as pd
 
+
+def clean_noisy_data(df: pd.DataFrame) -> pd.DataFrame:
+    # Clean noisy data for early and late hours
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    # df = df[(df['timestamp'].dt.hour >= 10) & (df['timestamp'].dt.hour < 16)]
+    df = df[(df['timestamp'].dt.hour >= 10) & (df['timestamp'].dt.hour < 17)]
+    return df
+
+
 def slprofit_strategy(df, profit, stop_loss, range) -> [str, int]:
     current_value = df['close'].iloc[0]  # El precio actual
     future_values = df['close'].iloc[1:range] if len(df['close'].iloc[1:]) >= range else df['close'].iloc[1:]
@@ -56,3 +65,7 @@ def discretize_features(df: pd.DataFrame) -> pd.DataFrame:
     df['MOM'] = df['MOM'].apply(lambda x: 1 if x > 0 else -1)
     df['RSI'] = transform_rsi_optimized(df['RSI'])
     return df
+
+
+# Las funciones de estrategias han sido movidas a trading_strategies.py
+# Este archivo mantiene solo las funciones básicas de utilidad
